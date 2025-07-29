@@ -32,6 +32,10 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="이런, 이 이메일은 이미 다른 사람이 사용 중이에요.")
     return crud_user.create_user(db=db, user=user)
 
+@router.get("/users/me", response_model=schemas.User, status_code=status.HTTP_200_OK)
+def me(user: schemas.User, db: Session = Depends(get_db)):
+    pass
+
 @router.post("/token")
 def login_for_access_token(db: Session = Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()):
     user = crud_user.get_user_by_email(db, email=form_data.username)
